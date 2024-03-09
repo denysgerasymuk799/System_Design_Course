@@ -1,4 +1,3 @@
-DATASET_LOCATION = "./data/history.csv"
 EXPERIMENT_FOLDER_NAME = 'experiment_1'
 CONFIGURATION_FOLDER_NAME = 'prod2_part10_cons10'
 
