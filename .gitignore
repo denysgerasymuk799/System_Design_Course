@@ -8,6 +8,7 @@
 doc/build/*
 doc/_build/*
 
+.DS_Store
 .idea
 
 .idea/*.xml
