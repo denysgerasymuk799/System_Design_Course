@@ -2,6 +2,7 @@
 
 The below code snippets are based on [the "WebSockets in FastAPI" guide](https://fastapi.tiangolo.com/advanced/websockets/).
 
+Client:
 ```html
 <!DOCTYPE html>
 <html>
@@ -38,7 +39,7 @@ The below code snippets are based on [the "WebSockets in FastAPI" guide](https:/
 </html>
 ```
 
-
+Server:
 ```python
 from fastapi import FastAPI, WebSocket
 
