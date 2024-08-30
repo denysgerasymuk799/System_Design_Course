@@ -34,6 +34,27 @@ RETURN path;
 MATCH path = (b:Batch {batch_cid: "FNDG0015784430"})-[*1..12]-(p)
 WHERE p:ProcessOrder OR p:Batch
 RETURN path;
+
+
+// ============================================================================
+// Quality status query
+// ============================================================================
+CALL {
+    MATCH (p:ProcessOrder)-[:MADE_FROM]->(b:Batch)
+    WHERE b.harvest_year = '2022'
+        AND b.plant_id = 'NL01'
+        AND EXISTS(()-[:INSPECTED]->(b))
+        AND (b.material_group IN ['COM500', 'COM510'] OR (b.material_group = 'COM300' AND b.existing_inventory_flag = TRUE))
+        AND NOT p.process_order_type_id IN ['ZP03', 'ZP10', 'ZP22', 'ZP23', 'ZP24', 'ZP25', 'ZP26']
+    RETURN b.quality_status AS quality_status, count(DISTINCT b.batch_id) AS batch_count
+}
+WITH quality_status, batch_count
+RETURN
+    '# of batches' AS Measure,
+    SUM(CASE WHEN quality_status = 'GF' THEN batch_count ELSE 0 END) AS `Green`,
+    SUM(CASE WHEN quality_status = 'YF' THEN batch_count ELSE 0 END) AS `Yellow`,
+    SUM(CASE WHEN quality_status = 'RF' THEN batch_count ELSE 0 END) AS `Red`,
+    SUM(CASE WHEN NOT quality_status IN ['GF', 'YF', 'RF'] THEN batch_count ELSE 0 END) AS `Not finished`;
 ```
 
 
